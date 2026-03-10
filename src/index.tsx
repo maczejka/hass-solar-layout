@@ -22,9 +22,10 @@ export const SolarLayoutCardComponent = ({ layout, size, colors }: SolarLayoutCo
 
 defineCard({
     key: 'sunbichl-solar-layout',
+    name: 'Solar Layout',
+    description: 'Color-coded grid showing solar panel output per entity.',
     schema: solarLayoutConfigSchema,
-    entities: (config) =>
-        uniq(flatten(config.layout)).filter((id) => id !== '_'),
+    entities: (config) => uniq(flatten(config.layout)).filter((id) => id !== '_'),
     Component: SolarLayoutCardComponent,
     Editor: SolarLayoutEditor,
     getStubConfig: () => ({
