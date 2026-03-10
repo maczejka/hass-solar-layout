@@ -14,37 +14,37 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          path: packages/hass-solar-layout
 
-      # Reconstruct a minimal Yarn workspace so hass-react resolves
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository_owner }}/hass-react
+          path: packages/hass-react
+
+      # Create a minimal Yarn workspace root
       - name: Set up workspace
         run: |
-          mkdir -p /tmp/workspace/packages
-          cp -r . /tmp/workspace/packages/hass-solar-layout
-
-          git clone --depth 1 https://github.com/${{ github.repository_owner }}/hass-react.git \
-            /tmp/workspace/packages/hass-react
-
-          cat > /tmp/workspace/package.json << 'WSJSON'
+          cat > package.json << 'EOF'
           {
             "private": true,
             "workspaces": ["packages/*"]
           }
-          WSJSON
+          EOF
 
       - uses: actions/setup-node@v4
         with:
           node-version: 20
 
       - name: Install dependencies
-        working-directory: /tmp/workspace
         run: yarn install --frozen-lockfile || yarn install
 
       - name: Build
-        working-directory: /tmp/workspace/packages/hass-solar-layout
+        working-directory: packages/hass-solar-layout
         run: yarn build
 
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          files: /tmp/workspace/packages/hass-solar-layout/dist/hass-solar-layout.js
+          files: packages/hass-solar-layout/dist/hass-solar-layout.js
           generate_release_notes: true

@@ -1,3 +1,4 @@
 node_modules
-dist
+dist/*
+!dist/hass-solar-layout.js
 .idea
