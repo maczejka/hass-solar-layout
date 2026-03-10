@@ -4,8 +4,6 @@ A custom Home Assistant Lovelace card that displays a color-coded grid of solar 
 
 <img width="1390" height="665" alt="image" src="https://github.com/user-attachments/assets/895018b8-14ff-43ef-b8db-abb36bbcefd8" />
 
-> Replace the placeholder above with a real screenshot once the card is installed.
-
 ## Installation
 
 ### HACS (recommended)
