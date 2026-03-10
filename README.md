@@ -2,6 +2,10 @@
 
 A custom Home Assistant Lovelace card that displays a color-coded grid of solar panel entities. Each cell maps to an HA sensor and is colored based on a configurable gradient (e.g. blue → gold → orange by watt output).
 
+![Solar Layout card preview](https://via.placeholder.com/640x200/00bfff/fff?text=Solar+Layout+Preview)
+
+> Replace the placeholder above with a real screenshot once the card is installed.
+
 ## Installation
 
 ### HACS (recommended)

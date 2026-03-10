@@ -9,42 +9,14 @@ permissions:
   contents: write
 
 jobs:
-  build-and-release:
-    name: Build & Release
+  release:
+    name: Release
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          path: packages/hass-solar-layout
-
-      - uses: actions/checkout@v4
-        with:
-          repository: ${{ github.repository_owner }}/hass-react
-          path: packages/hass-react
-
-      # Create a minimal Yarn workspace root
-      - name: Set up workspace
-        run: |
-          cat > package.json << 'EOF'
-          {
-            "private": true,
-            "workspaces": ["packages/*"]
-          }
-          EOF
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile || yarn install
-
-      - name: Build
-        working-directory: packages/hass-solar-layout
-        run: yarn build
 
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          files: packages/hass-solar-layout/dist/hass-solar-layout.js
+          files: dist/hass-solar-layout.js
           generate_release_notes: true
