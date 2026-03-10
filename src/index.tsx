@@ -21,7 +21,7 @@ export const SolarLayoutCardComponent = ({ layout, size, colors }: SolarLayoutCo
 };
 
 defineCard({
-    key: 'sunbichl-solar-layout',
+    key: 'mac-solar-layout',
     name: 'Solar Layout',
     description: 'Color-coded grid showing solar panel output per entity.',
     schema: solarLayoutConfigSchema,

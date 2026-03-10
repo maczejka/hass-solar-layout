@@ -26,7 +26,7 @@ A custom Home Assistant Lovelace card that displays a color-coded grid of solar 
 Add the card via the UI card picker (search "Solar Layout") or manually in YAML:
 
 ```yaml
-type: custom:sunbichl-solar-layout
+type: custom:mac-solar-layout
 layout:
   - [sensor.panel_1, sensor.panel_2, sensor.panel_3]
   - [sensor.panel_4, sensor.panel_5, sensor.panel_6]
