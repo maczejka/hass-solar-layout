@@ -1,33 +1,43 @@
-import { useMockedEntityValue } from '@maczejka/hass-react';
+import { CardPlayground } from '@maczejka/hass-react/storybook';
+import flatten from 'lodash/flatten';
+import uniq from 'lodash/uniq';
 
+import { SolarLayoutEditor } from './editor';
 import { SolarLayoutCardComponent } from './index';
+import { SolarLayoutConfig } from './types';
 
 export default {
-    Component: SolarLayoutCardComponent,
+    title: 'Solar Layout / Card',
 };
 
-export const SolarLayoutCardComponentExample = () => {
-    useMockedEntityValue('sensor.ns22b9354955_temperature', 16.2334);
+const val = 'sensor.panel';
 
-    const layout = [
-        [
-            'sensor.235235t4_temperature',
-            'sensor.ns22b9354955_temperature',
-            'sensor.235235t4_temperature',
-        ],
-        ['sensor.235235t4_temperature'],
-        ['_', '_', 'sensor.235235t4_temperature'],
-    ];
-
-    return (
-        <SolarLayoutCardComponent
-            layout={layout}
-            colors={[
-                { color: 'deepskyblue', value: 0 },
-                { color: 'yellow', value: 200 },
-                { color: 'orange', value: 600 },
-            ]}
-            size={{ width: 200, height: 200 }}
-        />
-    );
-};
+export const Playground = () => (
+    <CardPlayground
+        card={{
+            entities: (config: SolarLayoutConfig) =>
+                uniq(flatten(config.layout)).filter((id) => id !== '_'),
+            Component: SolarLayoutCardComponent,
+            Editor: SolarLayoutEditor,
+        }}
+        initialConfig={{
+            layout: [
+                [val, val, val, val, val],
+                [val, val, val, val, val],
+                [val, val, val, val, val],
+                [val, val, val, val, val, val, val, val, val],
+                [],
+                [val, val, val, val, val],
+            ],
+            colors: [
+                { color: '#00bfff', value: 0 },
+                { color: '#ffd700', value: 200 },
+                { color: '#ff8c00', value: 600 },
+            ],
+            size: { width: 320, height: 200 },
+        }}
+        initialEntities={{
+            'sensor.panel': '460',
+        }}
+    />
+);

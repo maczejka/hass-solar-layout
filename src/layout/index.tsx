@@ -33,11 +33,12 @@ export const LayoutComponent = ({ layout, colors }: Props) => {
 
     return (
         <LayoutWrapper cols={numCols}>
-            {flatten(paddedLayout).map((panel) => {
+            {flatten(paddedLayout).map((panel, index) => {
                 if (panel === '_') {
-                    return <div key={panel} />;
+                    return <div key={index} />;
                 }
-                return <PanelComponent key={panel} entity={panel} colors={colors} />;
+
+                return <PanelComponent key={index} entity={panel} colors={colors} />;
             })}
         </LayoutWrapper>
     );

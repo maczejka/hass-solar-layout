@@ -1,10 +1,11 @@
-import { Card, defineCard } from '@maczejka/hass-react';
+import { defineCard } from '@maczejka/hass-react';
 import flatten from 'lodash/flatten';
 import uniq from 'lodash/uniq';
 import styled from 'styled-components';
 
+import { SolarLayoutEditor } from './editor';
 import { LayoutComponent } from './layout';
-import { SolarLayoutConfig } from './types';
+import { SolarLayoutConfig, solarLayoutConfigSchema } from './types';
 
 const CardWrapper = styled.div<{ $w?: number; $h?: number }>`
     width: ${({ $w }) => ($w ? `${$w}px` : '100%')};
@@ -19,10 +20,19 @@ export const SolarLayoutCardComponent = ({ layout, size, colors }: SolarLayoutCo
     );
 };
 
-export const SolarLayoutCard: Card<SolarLayoutConfig> = {
+defineCard({
     key: 'sunbichl-solar-layout',
-    entities: (config) => uniq(flatten(config.layout)),
+    schema: solarLayoutConfigSchema,
+    entities: (config) =>
+        uniq(flatten(config.layout)).filter((id) => id !== '_'),
     Component: SolarLayoutCardComponent,
-};
-
-defineCard(SolarLayoutCard);
+    Editor: SolarLayoutEditor,
+    getStubConfig: () => ({
+        layout: [['_', '_', '_']],
+        colors: [
+            { color: '#00bfff', value: 0 },
+            { color: '#ffd700', value: 200 },
+            { color: '#ff8c00', value: 600 },
+        ],
+    }),
+});
