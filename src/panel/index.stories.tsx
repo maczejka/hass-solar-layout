@@ -1,4 +1,4 @@
-import { useMockedEntityValue } from '@maczejka/hass-react/src/state';
+import { useMockedEntityValue } from '@maczejka/hass-react';
 import styled from 'styled-components';
 
 import { PanelComponent } from './index';
