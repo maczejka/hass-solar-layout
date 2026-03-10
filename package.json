@@ -1,0 +1,26 @@
+{
+  "name": "@maczejka/hass-solar-layout",
+  "private": true,
+  "version": "0.1.0",
+  "main": "src/index.tsx",
+  "dependencies": {
+    "@maczejka/hass-react": "*",
+    "lodash": "^4.17.23",
+    "react": "^19.2.4",
+    "react-cool-dimensions": "^3.0.1",
+    "react-dom": "^19.2.4",
+    "styled-components": "^6.3.11",
+    "tinycolor2": "^1.6.0",
+    "tinygradient": "^2.0.1"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.17.24",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@types/tinycolor2": "^1.4.6",
+    "react-rnd": "^10.5.2"
+  },
+  "scripts": {
+    "build": "webpack --mode=production --env mode=production"
+  }
+}
