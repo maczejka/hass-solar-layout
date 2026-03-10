@@ -15,3 +15,5 @@ jobs:
       - uses: hacs/action@main
         with:
           category: plugin
+          # Skip checks that fail on private repos; remove once public
+          ignore: hacsjson|images
