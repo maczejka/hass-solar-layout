@@ -1,12 +1,17 @@
-import { useEntity } from '@maczejka/hass-react';
+import { createEntityHook } from '@maczejka/hass-react';
 import max from 'lodash/max';
 import min from 'lodash/min';
 import styled from 'styled-components';
 import tinygradient from 'tinygradient';
+import * as v from 'valibot';
 
 import { ColorStep } from '../types';
 
 import { PanelIcon } from './icon';
+
+const useNumericEntity = createEntityHook(
+    v.pipe(v.string(), v.transform(Number), v.number(), v.finite()),
+);
 
 const ValueWrapper = styled.div`
     font-size: small;
@@ -18,9 +23,9 @@ type PanelProps = {
 };
 
 export const PanelComponent = ({ entity, colors }: PanelProps) => {
-    const value = useEntity({ entityId: entity });
+    const { value, isAvailable, isValid } = useNumericEntity({ entityId: entity });
 
-    if (value === undefined) {
+    if (!isAvailable || !isValid || value === undefined) {
         return <PanelIcon color="gray" />;
     }
 

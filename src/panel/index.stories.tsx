@@ -8,7 +8,7 @@ export default {
 };
 
 const ExamplePanel = () => {
-    useMockedEntityValue('sensor.ns22b9354955_temperature', 16.2334);
+    useMockedEntityValue('sensor.ns22b9354955_temperature', '16.2334');
 
     return <PanelComponent entity="sensor.ns22b9354955_temperature" />;
 };
