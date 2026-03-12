@@ -56,7 +56,9 @@ export const PanelComponent = ({ entity, colors }: PanelProps) => {
         },
     ]);
 
-    const color = gradient.rgb(255)[range === 0 ? 0 : Math.floor((value / range) * 255)];
+    const raw = range === 0 ? 0 : Math.floor((value / range) * 255);
+    const index = Number.isFinite(raw) ? Math.max(0, Math.min(254, raw)) : 0;
+    const color = gradient.rgb(255)[index];
 
     return (
         <PanelIcon color={color.toHexString()}>
