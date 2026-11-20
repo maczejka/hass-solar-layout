@@ -1,31 +1,58 @@
 import { defineCard } from '@maczejka/hass-react';
-import flatten from 'lodash/flatten';
-import uniq from 'lodash/uniq';
 import styled from 'styled-components';
 
 import { SolarLayoutEditor } from './editor';
 import { LayoutComponent } from './layout';
 import { SolarLayoutConfig, solarLayoutConfigSchema } from './types';
 
-const CardWrapper = styled.div<{ $w?: number; $h?: number }>`
+const Card = styled.div<{ $w?: number }>`
+    box-sizing: border-box;
     width: ${({ $w }) => ($w ? `${$w}px` : '100%')};
-    height: ${({ $h }) => ($h ? `${$h}px` : '100%')} !important;
+    max-width: 100%;
+    padding: 12px;
+    background: var(--ha-card-background, var(--card-background-color, #1c1c1c));
+    border: var(--ha-card-border-width, 1px) solid
+        var(--ha-card-border-color, var(--divider-color, #e0e0e0));
+    border-radius: var(--ha-card-border-radius, 12px);
+    box-shadow: var(--ha-card-box-shadow, none);
+    color: var(--primary-text-color);
 `;
 
-export const SolarLayoutCardComponent = ({ layout, size, colors }: SolarLayoutConfig) => {
-    return (
-        <CardWrapper $w={size?.width} $h={size?.height}>
-            <LayoutComponent layout={layout} colors={colors} />
-        </CardWrapper>
-    );
-};
+export const SolarLayoutCardComponent = ({
+    layout,
+    size,
+    colors,
+    title,
+    show_summary,
+    show_legend,
+    show_values,
+    aspect_ratio,
+    outlier_threshold,
+    group_names,
+}: SolarLayoutConfig) => (
+    <Card $w={size?.width}>
+        <LayoutComponent
+            layout={layout}
+            colors={colors}
+            title={title}
+            showSummary={show_summary ?? true}
+            showLegend={show_legend ?? true}
+            showValues={show_values ?? true}
+            aspect={aspect_ratio && aspect_ratio > 0 ? aspect_ratio : 1}
+            outlierThreshold={outlier_threshold ?? 0.7}
+            groupNames={group_names}
+            maxGridHeight={size?.height}
+        />
+    </Card>
+);
 
 defineCard({
     key: 'mac-solar-layout',
     name: 'Solar Layout',
-    description: 'Color-coded grid showing solar panel output per entity.',
+    description:
+        'Solar panels as modules that glow with their output, with totals, weak-panel detection and a legend.',
     schema: solarLayoutConfigSchema,
-    entities: (config) => uniq(flatten(config.layout)).filter((id) => id !== '_'),
+    entities: (config) => [...new Set(config.layout.flat())].filter((id) => id && id !== '_'),
     Component: SolarLayoutCardComponent,
     Editor: SolarLayoutEditor,
     getStubConfig: () => ({

@@ -1,10 +1,9 @@
 import { CardPlayground } from '@maczejka/hass-react/storybook';
-import flatten from 'lodash/flatten';
-import uniq from 'lodash/uniq';
 
 import { SolarLayoutEditor } from './editor';
-import { SolarLayoutCardComponent } from './index';
 import { SolarLayoutConfig } from './types';
+
+import { SolarLayoutCardComponent } from './index';
 
 export default {
     title: 'Solar Layout / Card',
@@ -16,7 +15,7 @@ export const Playground = () => (
     <CardPlayground
         card={{
             entities: (config: SolarLayoutConfig) =>
-                uniq(flatten(config.layout)).filter((id) => id !== '_'),
+                [...new Set(config.layout.flat())].filter((id) => id !== '_'),
             Component: SolarLayoutCardComponent,
             Editor: SolarLayoutEditor,
         }}
@@ -26,7 +25,7 @@ export const Playground = () => (
                 [val, val, val, val, val],
                 [val, val, val, val, val],
                 [val, val, val, val, val, val, val, val, val],
-                [],
+                ['_'],
                 [val, val, val, val, val],
             ],
             colors: [
@@ -34,7 +33,8 @@ export const Playground = () => (
                 { color: '#ffd700', value: 200 },
                 { color: '#ff8c00', value: 600 },
             ],
-            size: { width: 320, height: 200 },
+            title: 'PV modules',
+            group_names: ['Roof', 'Balcony'],
         }}
         initialEntities={{
             'sensor.panel': '460',

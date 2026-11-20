@@ -237,6 +237,14 @@ const s = {
     } satisfies CSSProperties,
 };
 
+const DISPLAY_TOGGLES: ReadonlyArray<
+    readonly ['show_summary' | 'show_legend' | 'show_values', string]
+> = [
+    ['show_summary', 'Summary header (total, average, max/min, groups)'],
+    ['show_legend', 'Colour legend'],
+    ['show_values', 'Value on each panel'],
+];
+
 // ---------------------------------------------------------------------------
 // Editor
 // ---------------------------------------------------------------------------
@@ -548,6 +556,90 @@ export const SolarLayoutEditor = ({ config, onChange, hass }: EditorProps<SolarL
                         <span style={s.sizeSep}>px</span>
                     </div>
                 )}
+            </div>
+
+            {/* ---- Display ---- */}
+            <div style={s.section}>
+                <div style={s.sectionTitle}>Display</div>
+                <label style={s.sizeLabel}>
+                    Title
+                    <input
+                        type="text"
+                        style={s.brushInput}
+                        value={config.title ?? ''}
+                        placeholder="e.g. PV modules"
+                        onChange={(e) =>
+                            onChange({ ...config, title: e.target.value || undefined })
+                        }
+                    />
+                </label>
+                {DISPLAY_TOGGLES.map(([key, label]) => (
+                    <label key={key} style={s.checkboxLabel}>
+                        <input
+                            type="checkbox"
+                            style={s.checkbox}
+                            checked={config[key] ?? true}
+                            onChange={(e) => onChange({ ...config, [key]: e.target.checked })}
+                        />
+                        {label}
+                    </label>
+                ))}
+                <div style={s.sizeRow}>
+                    <label style={s.sizeLabel}>
+                        Panel aspect (w/h)
+                        <input
+                            type="number"
+                            step="0.05"
+                            min="0.3"
+                            max="3"
+                            style={s.numberInput}
+                            value={config.aspect_ratio ?? 1}
+                            onChange={(e) => {
+                                const n = Number.parseFloat(e.target.value);
+                                onChange({
+                                    ...config,
+                                    aspect_ratio: Number.isFinite(n) && n > 0 ? n : undefined,
+                                });
+                            }}
+                        />
+                    </label>
+                    <label style={s.sizeLabel}>
+                        Weak below % of group median
+                        <input
+                            type="number"
+                            step="5"
+                            min="0"
+                            max="100"
+                            style={s.numberInput}
+                            value={Math.round((config.outlier_threshold ?? 0.7) * 100)}
+                            onChange={(e) => {
+                                const n = Number.parseFloat(e.target.value);
+                                onChange({
+                                    ...config,
+                                    outlier_threshold: Number.isFinite(n)
+                                        ? Math.max(0, Math.min(100, n)) / 100
+                                        : undefined,
+                                });
+                            }}
+                        />
+                    </label>
+                </div>
+                <label style={s.sizeLabel}>
+                    Group names (comma separated, groups are split by empty rows)
+                    <input
+                        type="text"
+                        style={s.brushInput}
+                        value={(config.group_names ?? []).join(', ')}
+                        placeholder="e.g. Roof, Balcony"
+                        onChange={(e) => {
+                            const names = e.target.value
+                                .split(',')
+                                .map((x) => x.trim())
+                                .filter(Boolean);
+                            onChange({ ...config, group_names: names.length ? names : undefined });
+                        }}
+                    />
+                </label>
             </div>
         </div>
     );

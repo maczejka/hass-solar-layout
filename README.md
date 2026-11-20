@@ -1,6 +1,9 @@
 # Solar Layout
 
-A custom Home Assistant Lovelace card that displays a color-coded grid of solar panel entities. Each cell maps to an HA sensor and is colored based on a configurable gradient (e.g. blue → gold → orange by watt output).
+A custom Home Assistant Lovelace card that shows your solar panels as modules — aluminium frame, cell grid, glass sheen —
+that take on a gradient colour and start to glow the more they produce. A header sums up the array (total, per-group
+totals, average, best / weakest panel, how many report), weak panels are flagged against their group's median, and a
+legend explains the colours. Tap a panel for its history.
 
 <img width="1390" height="665" alt="image" src="https://github.com/user-attachments/assets/895018b8-14ff-43ef-b8db-abb36bbcefd8" />
 
@@ -37,9 +40,8 @@ colors:
     value: 200
   - color: "#ff8c00"
     value: 600
-size:
-  width: 320
-  height: 200
+title: PV modules
+group_names: [Roof, Balcony]
 ```
 
 ### Options
@@ -48,15 +50,23 @@ size:
 |---|---|---|---|
 | `layout` | `string[][]` | required | 2D grid of entity IDs. Use `_` for empty cells. |
 | `colors` | `{color, value}[]` | required | Gradient color stops mapped to sensor values. |
-| `size` | `{width?, height?}` | — | Fixed pixel size. Omit to fill the card container. |
+| `size` | `{width?, height?}` | — | `width`: fixed card width. `height`: maximum height of the panel grid (the grid shrinks to fit). Omit to fill the container. |
+| `title` | `string` | — | Title in the summary header. |
+| `show_summary` | `boolean` | `true` | Header with total, group totals, average, max/min, active count, weak panels. |
+| `show_legend` | `boolean` | `true` | Colour legend below the panels. |
+| `show_values` | `boolean` | `true` | Value printed on each panel. |
+| `aspect_ratio` | `number` | `1` | Panel width / height, e.g. `0.6` for portrait modules. |
+| `outlier_threshold` | `number` | `0.7` | Flag a panel delivering less than this share of its group's median (`0` = off). |
+| `group_names` | `string[]` | — | Names of the panel groups (top to bottom). Groups are separated by rows that contain only `_`. |
 
 ## Visual Editor
 
 The card includes a full visual editor accessible from the card configuration panel:
 
-- **Layout tab** — paint entities onto a grid with a brush selector
-- **Color gradient tab** — add/remove color stops with a live gradient preview
-- **Size tab** — toggle between fit-container and fixed pixel dimensions
+- **Layout** — paint entities onto a grid with a brush selector
+- **Color gradient** — add/remove color stops with a live gradient preview
+- **Size** — toggle between fit-container and fixed pixel dimensions
+- **Display** — title, summary / legend / values on or off, panel aspect ratio, weak-panel threshold, group names
 
 ## License
 
